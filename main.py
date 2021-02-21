@@ -70,22 +70,23 @@ def process_drink(drink_name, request_ingredients):
 profit_amount = 0
 coffee_machine_is_on = True
 while coffee_machine_is_on:
-    user_input = input("What would you like to have? (espresso/latte/cappuccino): ").lower()
-    if user_input == "report":
+    user_choice = input("What would you like to have? (espresso/latte/cappuccino): ").lower()
+    if user_choice == "report":
         for resource in resources:
             if resource != "coffee":
                 print(f"{resource.title()}: {resources[resource]}ml")
             else:
                 print(f"{resource.title()}: {resources[resource]}g")
         print(f"Money: {profit_amount}")
-    elif user_input == "espresso" or user_input == "latte" or user_input == "cappuccino":
-        drink = MENU[user_input]
-        if check_resources(drink["ingredients"], resources):
-            total_amount = process_coin()
-            if calculate_change(drink["cost"], total_amount):
-                process_drink(user_input, drink["ingredients"])
 
-    elif user_input == "off":
+    elif user_choice == "off":
         coffee_machine_is_on = False
     else:
-        print("Incorrect drink requested")
+        if user_choice in MENU:
+            drink = MENU[user_choice]
+            if check_resources(drink["ingredients"], resources):
+                total_amount = process_coin()
+                if calculate_change(drink["cost"], total_amount):
+                    process_drink(user_choice, drink["ingredients"])
+        else:
+            print("Incorrect drink")
